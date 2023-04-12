@@ -29,4 +29,34 @@ M.lazy_load = function(plugin)
   })
 end
 
+
+M.load_lsp_mappings = function(bufopts)
+	-- set keymap with bufopts in normal mode
+    local function nnoremap(rhs, lhs, opts, desc)
+        opts.desc = desc
+        vim.keymap.set("n", rhs, lhs, opts)
+    end
+
+    -- set keymap with bufopts in visual mode
+    local function vnoremap(rhs, lhs, opts, desc)
+        opts.desc = desc
+        vim.keymap.set("v", rhs, lhs, opts)
+    end
+
+    ---- Regular Neovim LSP client keymappings
+    nnoremap('gD', vim.lsp.buf.declaration, bufopts, "LSP declaration")
+    nnoremap('gd', vim.lsp.buf.definition, bufopts, "LSP definition")
+    nnoremap('gi', vim.lsp.buf.implementation, bufopts, "LSP implementation")
+    nnoremap('K', vim.lsp.buf.hover, bufopts, "LSP hover")
+    nnoremap('<C-k>', vim.lsp.buf.signature_help, bufopts, "LSP signature")
+    nnoremap('<space>wa', vim.lsp.buf.add_workspace_folder, bufopts, "LSP add workspace folder")
+    nnoremap('<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts, "LSP remove workspace folder")
+    nnoremap('<space>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, bufopts, "LSP list workspace folders")
+    nnoremap('<space>gd', vim.lsp.buf.type_definition, bufopts, "LSP type definition")
+    nnoremap('<space>rn', vim.lsp.buf.rename, bufopts, "LSP rename")
+    nnoremap('<space>ca', vim.lsp.buf.code_action, bufopts, "LSP code action")
+    vnoremap("<space>ca", vim.lsp.buf.range_code_action, bufopts, "LSP range code action")
+    nnoremap('<space>FF', function() vim.lsp.buf.format { async = true } end, bufopts, "LSP format")
+end
+
 return M
