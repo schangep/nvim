@@ -1,5 +1,10 @@
 local cmp = require("cmp")
 
+if not cmp then
+    print("nvim-cmp failed...")
+    return
+end
+
 local mappings = {
     ['<C-b>'] = cmp.mapping.scroll_docs(-2),
     ['<C-f>'] = cmp.mapping.scroll_docs(2),
@@ -10,8 +15,12 @@ local mappings = {
 
 local sources = {
     { name = "nvim_lsp" },
+    { name = "nvim_lsp_signature_help" },
+    { name = "nvim_lua" },
     { name = "luasnip" },
     { name = "path" },
+    { name = "buffer", keyword_length = 3 },
+    -- { name = "spell", keyword_length = 3, option = {keep_all_entries = false} }, -- only if 'vim.opt.spell' is set to 'true'
 }
 
 local options = {

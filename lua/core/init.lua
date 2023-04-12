@@ -1,13 +1,14 @@
 -- install package manager and language servers
 require("core.bootstrap")
 
--- initialise auto commands
+-- initialize auto commands
 require("core.autocmd").setup()
 
 -- leader key
 vim.g.mapleader = " "
 
 -- show line number and cursorline
+vim.opt.guicursor = ""
 vim.opt.number = true
 vim.opt.cursorline = true
 
@@ -18,12 +19,20 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
--- improve search behaviour
+-- improve search behavior
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- completion menus
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
+
+-- spell suggestions
+--vim.opt.spell = true
+vim.opt.spelllang = { "en_us", "de" }
+vim.opt.spellsuggest = { "best", 9 }
+
+-- enable persistent undo
+vim.opt.undofile = true
 
 -- colorscheme options
 vim.g.tokyonight_transparent_sidebar = true

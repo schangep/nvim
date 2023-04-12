@@ -74,11 +74,13 @@ local plugins = {
                 dependencies = { "rafamadriz/friendly-snippets", },
             },
             -- cmp sources plugins
-            "saadparwaiz1/cmp_luasnip",
-            "hrsh7th/cmp-nvim-lua",
-            "hrsh7th/cmp-nvim-lsp",
+            "saadparwaiz1/cmp_luasnip", -- snippet completions
+            "hrsh7th/cmp-nvim-lua", -- enhanced Neovim config editing
+            "hrsh7th/cmp-nvim-lsp", -- LSP completion
+            "hrsh7th/cmp-nvim-lsp-signature-help", -- signature help completion
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
+            -- "f3fora/cmp-spell", -- spellsuggest completion
         },
     },
 
