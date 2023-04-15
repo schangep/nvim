@@ -14,7 +14,7 @@ table.insert(lua_runtime_path, "lua/?/init.lua")
 -- Mason setup
 require("mason").setup()
 require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "clangd", },
+    ensure_installed = { "clangd", "lua_ls", "texlab", },
     automatic_installation = true,
 }
 
@@ -76,6 +76,10 @@ servers.lua_ls = {
 }
 -- clangd
 servers.clangd = {}
+-- LaTeX language server
+servers.texlab = {
+    -- 'texlab' uses 'tectonic' by default, but 'lspconfig' replaces it with 'latexmk'
+}
 
 -- starting LSP servers
 local lspconfig = require("lspconfig")
@@ -88,6 +92,13 @@ for server, opts in pairs(servers) do
         }
         -- merge opts into defaults and start server
         lspconfig[server].setup(vim.tbl_extend("force", defaults, opts))
+    end
+
+    -- additional LaTeX commands
+    if server == "texlab" then
+        local buf = vim.api.nvim_get_current_buf()
+        vim.api.nvim_buf_create_user_command(buf, "TexlabBuild", lspconfig.texlab.commands.TexlabBuild[1], {})
+        vim.api.nvim_buf_create_user_command(buf, "TexlabForward", lspconfig.texlab.commands.TexlabForward[1], {})
     end
 end
 

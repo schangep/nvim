@@ -46,8 +46,9 @@ local plugins = {
 
     -- Mason package manager for LSP servers
     { "williamboman/mason.nvim",
-        --lazy = false, -- lazy loading is not recommended, but we'll try anyways
-        init = function() utils.lazy_load("mason.nvim") end,
+        lazy = false, -- lazy loading is not recommended
+        --init = function() utils.lazy_load("mason.nvim") end,
+        --cmd = { "Mason", "MasonInstall", "MasonUpdate", "MasonUninstall", "MasonUninstallAll" },
         build = ":MasonUpdate", -- update registry contents
         config = function() require("plugins.config.lsp") end,
     },
