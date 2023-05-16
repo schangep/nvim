@@ -4,8 +4,8 @@ require("core.bootstrap")
 -- initialize auto commands
 require("core.autocmd").setup()
 
--- leader key
-vim.g.mapleader = " "
+-- global mappings
+require("core.mappings")
 
 -- show line number and cursorline
 vim.opt.guicursor = ""
@@ -39,8 +39,3 @@ vim.g.tokyonight_transparent_sidebar = true
 vim.g.tokyonight_transparent = true
 vim.opt.background = "dark"
 
--- global mappings
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)

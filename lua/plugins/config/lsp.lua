@@ -1,9 +1,7 @@
-local utils = require("core.utils")
-
 -- get user's home directory
 local home = vim.fn.expand('$HOME')
 
--- get workspace directory
+-- get workspace directory for jdtls
 local workspace_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
 -- get Lua runtime path
@@ -14,7 +12,7 @@ table.insert(lua_runtime_path, "lua/?/init.lua")
 -- Mason setup
 require("mason").setup()
 require("mason-lspconfig").setup {
-    ensure_installed = { "clangd", "lua_ls", "texlab", },
+    ensure_installed = { "clangd", "lua_ls", "ltex", "pyright", "texlab",},
     automatic_installation = true,
 }
 
@@ -33,12 +31,6 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 -- enable LSP enhanced autocomplete
 local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, cmp_capabilities)
-
--- export on_attach for custom lspconfigs
-local on_attach = function(_, bufnr)
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    utils.load_lsp_mappings(bufopts)
-end
 
 -- table of language servers and their specific configurations
 local servers = {}
@@ -79,6 +71,20 @@ servers.clangd = {}
 -- LaTeX language server
 servers.texlab = {
     -- 'texlab' uses 'tectonic' by default, but 'lspconfig' replaces it with 'latexmk'
+    settings = {
+        texlab = {
+            build = {
+                args = { "-pdflua", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                executable = "latexmk",
+            },
+        },
+    },
+}
+-- LTeX language server (LanguageTool integration)
+servers.ltex = {
+}
+-- Python language server
+servers.pyright = {
 }
 
 -- starting LSP servers
@@ -87,7 +93,6 @@ for server, opts in pairs(servers) do
     -- jdtls must be started via jdtls.setup as a filetype plugin
     if server ~= "jdtls" then
         local defaults = {
-            on_attach = on_attach,
             capabilities = capabilities,
         }
         -- merge opts into defaults and start server
@@ -100,5 +105,6 @@ for server, opts in pairs(servers) do
         vim.api.nvim_buf_create_user_command(buf, "TexlabBuild", lspconfig.texlab.commands.TexlabBuild[1], {})
         vim.api.nvim_buf_create_user_command(buf, "TexlabForward", lspconfig.texlab.commands.TexlabForward[1], {})
     end
+
 end
 

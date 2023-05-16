@@ -11,28 +11,31 @@ local plugins = {
         config = function() vim.cmd.colorscheme("tokyonight") end,
     },
 
-    --[[
     -- use the 'VeryLazy' event for colorschemes that can load later and are
     -- not important for the initial UI
-   
+
     -- rose-pine colorscheme
     { "rose-pine/neovim",
         name = "rose-pine",
         event = "VeryLazy",
     },
-    
+
     -- nightfox colorscheme
     { "EdenEast/nightfox.nvim",
         event = "VeryLazy",
     },
-    --]]
-
 
     -- remember cursor position
     { "ethanholz/nvim-lastplace",
         lazy = false,
         opts = require("plugins.config.lastplace"),
         -- config = function() require("nvim-lastplace").setup(opts) end, -- implied by 'opts'
+    },
+
+    -- toggle comments
+    { "numToStr/Comment.nvim",
+        event = "VeryLazy",
+        config = function() require("Comment").setup() end,
     },
 
     -- Treesitter syntax highlighting
