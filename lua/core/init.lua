@@ -35,6 +35,7 @@ vim.opt.spellsuggest = { "best", 9 }
 vim.opt.undofile = true
 
 -- colorscheme options
+vim.opt.termguicolors = true
 vim.g.tokyonight_transparent_sidebar = true
 vim.g.tokyonight_transparent = true
 vim.opt.background = "dark"
