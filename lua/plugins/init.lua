@@ -38,6 +38,12 @@ local plugins = {
         config = function() require("Comment").setup() end,
     },
 
+    -- TMUX navigation
+    { "aserowy/tmux.nvim",
+        event = "VeryLazy",
+        config = function() require("tmux").setup() end,
+    },
+
     -- Treesitter syntax highlighting
     { "nvim-treesitter/nvim-treesitter",
         init = function() utils.lazy_load("nvim-treesitter") end,
