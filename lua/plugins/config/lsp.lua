@@ -82,6 +82,7 @@ servers.texlab = {
 }
 -- LTeX language server (LanguageTool integration)
 servers.ltex = {
+    language = "de-DE",
 }
 -- Python language server
 servers.pyright = {
