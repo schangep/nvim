@@ -27,7 +27,7 @@ local options = {
         "tar",
         "tarPlugin",
         "rrhelper",
-        "spellfile_plugin",
+        -- "spellfile_plugin",
         "vimball",
         "vimballPlugin",
         "zip",

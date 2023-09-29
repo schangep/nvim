@@ -96,13 +96,23 @@ local plugins = {
 
     -- Neo-tree file system browser
     { "nvim-neo-tree/neo-tree.nvim",
+        init = function() utils.lazy_load("neo-tree.nvim") end,
+        config = function() require("neo-tree").setup() end,
+        cmd = { "Neotree", },
         branch = "v3.x",
-        cmd = { "Neotree" },
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
             "MunifTanjim/nui.nvim",
         }
+    },
+
+    -- Telescope fuzzy finder
+    { "nvim-telescope/telescope.nvim",
+        init = function() utils.lazy_load("telescope.nvim") end,
+        branch = "0.1.x", -- release branch, gets consistent updates
+        dependencies = { "nvim-lua/plenary.nvim", },
+        config = function() require("plugins.config.telescope") end,
     },
 
 }

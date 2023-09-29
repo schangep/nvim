@@ -51,14 +51,18 @@ cmp.setup.filetype('gitcommit', {
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+-- might conflict with cmdline tab completion
+--[[
 cmp.setup.cmdline({ '/', '?' }, {
     mapping = cmp.mapping.preset.cmdline(),
-    sources = {
+    sources = cmp.config.sources({
         { name = 'buffer' }
-    }
+    })
 })
+--]]
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- might conflict with cmdline tab completion
 --[[ 
 cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
