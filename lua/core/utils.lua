@@ -1,5 +1,4 @@
 local M = {}
-local merge_tb = vim.tbl_deep_extend
 
 M.lazy_load = function(plugin)
   vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
