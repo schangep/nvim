@@ -115,6 +115,14 @@ local plugins = {
         config = function() require("plugins.config.telescope") end,
     },
 
+    -- Neorg note taking
+    { "nvim-neorg/neorg", tag = "v6.0.0",
+        cmd = { "Neorg", },
+        build = ":Neorg sync-parsers",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = require("plugins.config.neorg"),
+  },
+
 }
 
 return plugins
