@@ -39,7 +39,7 @@ local options = {
         "optwin",
         "compiler",
         "bugreport",
-        --"ftplugin",
+        -- "ftplugin",
       },
     },
   },

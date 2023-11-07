@@ -96,14 +96,15 @@ local plugins = {
 
     -- Neo-tree file system browser
     { "nvim-neo-tree/neo-tree.nvim",
-        init = function() utils.lazy_load("neo-tree.nvim") end,
-        config = function() require("neo-tree").setup() end,
+        config = function() require("plugins.config.neotree").setup() end,
+        init = function() require("plugins.config.neotree").init() end,
         cmd = { "Neotree", },
         branch = "v3.x",
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
             "MunifTanjim/nui.nvim",
+            -- "3rd/image.nvim", -- optional image support in preview window
         }
     },
 
@@ -114,14 +115,6 @@ local plugins = {
         dependencies = { "nvim-lua/plenary.nvim", },
         config = function() require("plugins.config.telescope") end,
     },
-
-    -- Neorg note taking
-    { "nvim-neorg/neorg", tag = "v6.0.0",
-        cmd = { "Neorg", },
-        build = ":Neorg sync-parsers",
-        dependencies = { "nvim-lua/plenary.nvim" },
-        opts = require("plugins.config.neorg"),
-  },
 
 }
 
