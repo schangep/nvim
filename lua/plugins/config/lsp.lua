@@ -12,8 +12,15 @@ table.insert(lua_runtime_path, "lua/?/init.lua")
 -- Mason setup
 require("mason").setup()
 require("mason-lspconfig").setup {
-    ensure_installed = { "clangd", "lua_ls", "ltex", "pyright", "texlab",},
     automatic_installation = true,
+    ensure_installed = {
+        "bashls",
+        "clangd",
+        "lua_ls",
+        "ltex",
+        "pyright",
+        "texlab",
+    },
 }
 
 -- add binaries installed by mason.nvim to path
@@ -65,6 +72,11 @@ servers.lua_ls = {
             },
         },
     },
+}
+-- bashls
+servers.bashls = {
+    -- 'bashls' requires 'shellcheck' (https://github.com/koalaman/shellcheck)
+    -- :MasonInstall shellcheck
 }
 -- clangd
 servers.clangd = {}

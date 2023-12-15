@@ -56,11 +56,10 @@ local plugins = {
     -- Mason package manager for LSP servers
     { "williamboman/mason.nvim",
         lazy = false, -- lazy loading is not recommended
-        --init = function() utils.lazy_load("mason.nvim") end,
-        --cmd = { "Mason", "MasonInstall", "MasonUpdate", "MasonUninstall", "MasonUninstallAll" },
         build = ":MasonUpdate", -- update registry contents
         config = function() require("plugins.config.lsp") end,
     },
+
     -- bridge Mason with builtin nvim-lspconfig
     { "williamboman/mason-lspconfig.nvim",
         init = function() utils.lazy_load("mason-lspconfig.nvim") end,
@@ -114,6 +113,39 @@ local plugins = {
         branch = "0.1.x", -- release branch, gets consistent updates
         dependencies = { "nvim-lua/plenary.nvim", },
         config = function() require("plugins.config.telescope") end,
+    },
+
+    -- Neovim builtin DAP (debug adapter protocol)
+
+    -- bridge Mason with bultin DAP
+    { "jay-babu/mason-nvim-dap.nvim",
+        event = "VeryLazy",
+        opts = {
+            handlers = {},
+            ensure_installed = { "codelldb", },
+        },
+        dependencies = {
+            "williamboman/mason.nvim",
+            "mfussenegger/nvim-dap", -- builtin Neovim DAP
+        },
+    },
+
+    -- enhanced interface for builtin DAP
+    { "rcarriga/nvim-dap-ui",
+        event = "VeryLazy",
+        config = function()
+            local dap = require("dap")
+            local dapui = require("dapui")
+            dapui.setup()
+            dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+            dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+            dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
+        end,
+        dependencies = {
+            "mfussenegger/nvim-dap", -- builtin Neovim DAP
+            "folke/neodev.nvim", -- recommended to enable type checking
+            "ChristianChiarulli/neovim-codicons", -- default icons with alignment issues fixed
+        },
     },
 
 }
