@@ -20,6 +20,12 @@ local plugins = {
         event = "VeryLazy",
     },
 
+    -- catppuccin colorscheme
+    { "catppuccin/nvim",
+        name = "catppuccin",
+        event = "VeryLazy",
+    },
+
     -- nightfox colorscheme
     { "EdenEast/nightfox.nvim",
         event = "VeryLazy",
