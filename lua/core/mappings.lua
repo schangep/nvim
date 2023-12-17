@@ -16,3 +16,6 @@ vim.keymap.set('n', '<leader>d', "<cmd>DapContinue<CR>") -- start or continue th
 vim.keymap.set('n', '<leader>j', "<cmd>DapStepOver<CR>")
 vim.keymap.set('n', '<leader>l', "<cmd>DapStepInto<CR>")
 vim.keymap.set('n', '<leader>h', "<cmd>DapStepOut<CR>")
+
+-- colortheme switcher
+vim.keymap.set('n', '<leader>cs', "<cmd>Telescope colorscheme<CR>")

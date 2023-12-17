@@ -4,15 +4,16 @@ local plugins = {
     -- plugin manager
     { "folke/lazy.nvim", },
 
-    -- the main colorscheme should be available when starting Neovim
-    { "folke/tokyonight.nvim",
-        lazy = false,
-        priority = 1000,
-        config = function() vim.cmd.colorscheme("tokyonight") end,
-    },
+    -- In principle we can lazy-load colorschemes,
+    -- since the plugin gets loaded on ":colorscheme foobar",
+    -- but then they don't get to appear in the completion list.
+    -- Thus, we use the "VeryLazy" event to load all colorscheme plugins.
+    -- The initial colorscheme is loaded and set by last-color.
 
-    -- use the 'VeryLazy' event for colorschemes that can load later and are
-    -- not important for the initial UI
+    -- tokyonight colorscheme
+    { "folke/tokyonight.nvim",
+        event = "VeryLazy",
+    },
 
     -- rose-pine colorscheme
     { "rose-pine/neovim",
@@ -31,12 +32,23 @@ local plugins = {
         event = "VeryLazy",
     },
 
+    -- remember colorscheme
+    { "raddari/last-color.nvim",
+        lazy = false,
+        priority = 1000, -- recommended for colorschemes
+        config = function()
+            vim.cmd.colorscheme(require("last-color").recall() or "tokyonight")
+        end,
+    },
+
     -- remember cursor position
     { "ethanholz/nvim-lastplace",
         lazy = false,
         opts = require("plugins.config.lastplace"),
         -- config = function() require("nvim-lastplace").setup(opts) end, -- implied by 'opts'
     },
+    -- "ethanholz/nvim-lastplace" has been archived by its owner, a possible replacement might be
+    -- { "vladdoster/remember.nvim", config=function() require("remember") end, },
 
     -- toggle comments
     { "numToStr/Comment.nvim",
