@@ -1,5 +1,3 @@
-local utils = require("core.utils")
-
 local plugins = {
     -- plugin manager
     { "folke/lazy.nvim", },
@@ -48,7 +46,7 @@ local plugins = {
         -- config = function() require("nvim-lastplace").setup(opts) end, -- implied by 'opts'
     },
     -- "ethanholz/nvim-lastplace" has been archived by its owner, a possible replacement might be
-    -- { "vladdoster/remember.nvim", config=function() require("remember") end, },
+    -- { "vladdoster/remember.nvim", config = function() require("remember") end, },
 
     -- toggle comments
     { "numToStr/Comment.nvim",
@@ -64,8 +62,7 @@ local plugins = {
 
     -- Treesitter syntax highlighting
     { "nvim-treesitter/nvim-treesitter",
-        init = function() utils.lazy_load("nvim-treesitter") end,
-        cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+        event = "VeryLazy",
         build = ":TSUpdate", -- build = function() require("nvim-treesitter.install").update({ with_sync = true }) end,
         opts = require("plugins.config.treesitter"),
         config = function(_, opts) require("nvim-treesitter.configs").setup(opts) end, -- NOT implied by 'opts'
@@ -80,17 +77,14 @@ local plugins = {
 
     -- bridge Mason with builtin nvim-lspconfig
     { "williamboman/mason-lspconfig.nvim",
-        init = function() utils.lazy_load("mason-lspconfig.nvim") end,
     },
 
     -- Neovim builtin LSP
     { "neovim/nvim-lspconfig",
-        init = function() utils.lazy_load("nvim-lspconfig") end,
     },
 
     -- Auto completion plugin for LSP completions
     { "hrsh7th/nvim-cmp",
-        init = function() utils.lazy_load("nvim-cmp") end,
         event = "InsertEnter",
         config = function() require("plugins.config.cmp") end,
         dependencies = {
@@ -127,7 +121,7 @@ local plugins = {
 
     -- Telescope fuzzy finder
     { "nvim-telescope/telescope.nvim",
-        init = function() utils.lazy_load("telescope.nvim") end,
+        lazy = false,
         branch = "0.1.x", -- release branch, gets consistent updates
         dependencies = { "nvim-lua/plenary.nvim", },
         config = function() require("plugins.config.telescope") end,
