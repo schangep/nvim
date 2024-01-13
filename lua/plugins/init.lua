@@ -75,18 +75,21 @@ local plugins = {
         -- use ':Copilot enable' to enable, see also ':help copilot'
     },
 
-    -- Neovim builtin LSP
-    { "neovim/nvim-lspconfig",
-    },
-
     -- Mason package manager for LSP servers
     { "williamboman/mason.nvim",
         lazy = false, -- lazy loading is not recommended
         build = ":MasonUpdate", -- update registry contents
         config = function() require("plugins.config.lsp") end,
         dependencies = {
-            -- bridge Mason with builtin nvim-lspconfig
-            "williamboman/mason-lspconfig.nvim",
+            "neovim/nvim-lspconfig", -- Neovim builtin LSP
+            "williamboman/mason-lspconfig.nvim", -- bridge Mason with builtin nvim-lspconfig
+        },
+        opts = {
+            -- add additional registry for Java LSP
+            registries = {
+                'github:nvim-java/mason-registry',
+                'github:mason-org/mason-registry',
+            },
         },
     },
 
@@ -134,9 +137,7 @@ local plugins = {
         config = function() require("plugins.config.telescope") end,
     },
 
-    -- Neovim builtin DAP (debug adapter protocol)
-
-    -- bridge Mason with bultin DAP
+    -- bridge Mason with Neovim bultin DAP (debug adapter protocol)
     { "jay-babu/mason-nvim-dap.nvim",
         event = "VeryLazy",
         opts = {
@@ -164,6 +165,21 @@ local plugins = {
             "mfussenegger/nvim-dap", -- builtin Neovim DAP
             "folke/neodev.nvim", -- recommended to enable type checking
             "ChristianChiarulli/neovim-codicons", -- default icons with alignment issues fixed
+        },
+    },
+
+    -- Java LSP is tricky to get working
+    { "nvim-java/nvim-java",
+        tag = "v1.0.4", -- release tag
+        dependencies = {
+            "nvim-java/lua-async-await",
+            "nvim-java/nvim-java-core",
+            "nvim-java/nvim-java-test",
+            "nvim-java/nvim-java-dap",
+            "MunifTanjim/nui.nvim",
+            "neovim/nvim-lspconfig",
+            "mfussenegger/nvim-dap",
+            "williamboman/mason.nvim",
         },
     },
 

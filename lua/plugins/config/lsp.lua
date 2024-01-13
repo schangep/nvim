@@ -105,18 +105,26 @@ servers.ltex = {
 -- Python language server
 servers.pyright = {}
 
+-- Java language server
+servers.jdtls = {}
+
 -- starting LSP servers
 local lspconfig = require("lspconfig")
 for server, opts in pairs(servers) do
 
-    -- jdtls must be started via jdtls.setup as a filetype plugin
-    if server ~= "jdtls" then
-        local defaults = {
-            capabilities = capabilities,
-        }
-        -- merge opts into defaults and start server
-        lspconfig[server].setup(vim.tbl_extend("force", defaults, opts))
-    end
+    -- nvim-java needs to be started before lspconfig
+    -- if server == "jdtls" then
+    --     -- this always wants to update jdtls and fails to do so,
+    --     -- opening Mason in the process, really annoying...
+    --     require("java").setup()
+    --     -- goto continue
+    -- end
+
+    local defaults = {
+        capabilities = capabilities,
+    }
+    -- merge opts into defaults and start server
+    lspconfig[server].setup(vim.tbl_extend("force", defaults, opts))
 
     -- additional LaTeX commands
     if server == "texlab" then
@@ -125,5 +133,6 @@ for server, opts in pairs(servers) do
         vim.api.nvim_buf_create_user_command(buf, "TexlabForward", lspconfig.texlab.commands.TexlabForward[1], {})
     end
 
+    -- ::continue::
 end
 
