@@ -63,9 +63,20 @@ local plugins = {
     -- Treesitter syntax highlighting
     { "nvim-treesitter/nvim-treesitter",
         event = "VeryLazy",
-        build = ":TSUpdate", -- build = function() require("nvim-treesitter.install").update({ with_sync = true }) end,
+        build = ":TSUpdate",
         opts = require("plugins.config.treesitter"),
         config = function(_, opts) require("nvim-treesitter.configs").setup(opts) end, -- NOT implied by 'opts'
+    },
+
+    -- GitHub Copilot
+    { "github/copilot.vim",
+        cmd = "Copilot",
+        -- use ':Copilot setup' to configure GitHub Copilot
+        -- use ':Copilot enable' to enable, see also ':help copilot'
+    },
+
+    -- Neovim builtin LSP
+    { "neovim/nvim-lspconfig",
     },
 
     -- Mason package manager for LSP servers
@@ -73,14 +84,10 @@ local plugins = {
         lazy = false, -- lazy loading is not recommended
         build = ":MasonUpdate", -- update registry contents
         config = function() require("plugins.config.lsp") end,
-    },
-
-    -- bridge Mason with builtin nvim-lspconfig
-    { "williamboman/mason-lspconfig.nvim",
-    },
-
-    -- Neovim builtin LSP
-    { "neovim/nvim-lspconfig",
+        dependencies = {
+            -- bridge Mason with builtin nvim-lspconfig
+            "williamboman/mason-lspconfig.nvim",
+        },
     },
 
     -- Auto completion plugin for LSP completions

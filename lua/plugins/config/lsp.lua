@@ -41,6 +41,7 @@ capabilities = vim.tbl_deep_extend("force", capabilities, cmp_capabilities)
 
 -- table of language servers and their specific configurations
 local servers = {}
+
 -- Lua language server 
 servers.lua_ls = {
     settings = {
@@ -73,13 +74,16 @@ servers.lua_ls = {
         },
     },
 }
+
 -- bashls
 servers.bashls = {
     -- 'bashls' requires 'shellcheck' (https://github.com/koalaman/shellcheck)
     -- :MasonInstall shellcheck
 }
+
 -- clangd
 servers.clangd = {}
+
 -- LaTeX language server
 servers.texlab = {
     -- 'texlab' uses 'tectonic' by default, but 'lspconfig' replaces it with 'latexmk'
@@ -92,17 +96,19 @@ servers.texlab = {
         },
     },
 }
+
 -- LTeX language server (LanguageTool integration)
 servers.ltex = {
     language = "de-DE",
 }
+
 -- Python language server
-servers.pyright = {
-}
+servers.pyright = {}
 
 -- starting LSP servers
 local lspconfig = require("lspconfig")
 for server, opts in pairs(servers) do
+
     -- jdtls must be started via jdtls.setup as a filetype plugin
     if server ~= "jdtls" then
         local defaults = {
