@@ -1,27 +1,7 @@
--- get user's home directory
-local home = vim.fn.expand('$HOME')
-
--- get workspace directory for jdtls
-local workspace_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-
 -- get Lua runtime path
 local lua_runtime_path = vim.split(package.path, ";")
 table.insert(lua_runtime_path, "lua/?.lua")
 table.insert(lua_runtime_path, "lua/?/init.lua")
-
--- Mason setup
-require("mason").setup()
-require("mason-lspconfig").setup {
-    automatic_installation = true,
-    ensure_installed = {
-        "bashls",
-        "clangd",
-        "lua_ls",
-        "ltex",
-        "pyright",
-        "texlab",
-    },
-}
 
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
@@ -40,99 +20,92 @@ local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, cmp_capabilities)
 
 -- table of language servers and their specific configurations
-local servers = {}
+local handlers = {
+    -- default handler (optional)
+    function(server)
+        local lspconfig = require("lspconfig")
+        lspconfig[server].setup { capabilities = capabilities }
+    end,
 
--- Lua language server 
-servers.lua_ls = {
-    settings = {
-        Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using
-                -- (most likely LuaJIT in the case of Neovim)
-                version = "LuaJIT",
-                path = lua_runtime_path,
-            },
-            diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = { "vim" },
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = {
-                    vim.api.nvim_get_runtime_file("", true),
-                    [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-                    [vim.fn.expand "$VIMRUNTIME/lua/core"] = true,
-                    [vim.fn.expand "$VIMRUNTIME/lua/plugins"] = true,
+    -- Lua language server
+    ["lua_ls"] = function()
+        local lspconfig = require("lspconfig")
+        lspconfig.lua_ls.setup {
+            settings = {
+                Lua = {
+                    runtime = {
+                        -- Tell the language server which version of Lua you're using
+                        -- (most likely LuaJIT in the case of Neovim)
+                        version = "LuaJIT",
+                        path = lua_runtime_path,
+                    },
+                    diagnostics = {
+                        -- Get the language server to recognize the `vim` global
+                        globals = { "vim" },
+                    },
+                    workspace = {
+                        -- Make the server aware of Neovim runtime files
+                        library = {
+                            vim.api.nvim_get_runtime_file("", true),
+                            [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+                            [vim.fn.expand "$VIMRUNTIME/lua/core"] = true,
+                            [vim.fn.expand "$VIMRUNTIME/lua/plugins"] = true,
+                        },
+                        -- Disable environment emulation
+                        checkThirdParty = false,
+                    },
+                    -- Do not send telemetry data containing a randomized but unique identifier
+                    telemetry = {
+                        enable = false,
+                    },
                 },
-                -- Disable environment emulation
-                checkThirdParty = false,
             },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
-}
+        }
+    end,
 
--- bashls
-servers.bashls = {
+    -- Bash language server
     -- 'bashls' requires 'shellcheck' (https://github.com/koalaman/shellcheck)
     -- :MasonInstall shellcheck
-}
 
--- clangd
-servers.clangd = {}
-
--- LaTeX language server
-servers.texlab = {
-    -- 'texlab' uses 'tectonic' by default, but 'lspconfig' replaces it with 'latexmk'
-    settings = {
-        texlab = {
-            build = {
-                args = { "-pdflua", "-interaction=nonstopmode", "-synctex=1", "%f" },
-                executable = "latexmk",
+    -- LaTeX language server
+    ["texlab"] = function()
+        local lspconfig = require("lspconfig")
+        lspconfig.texlab.setup {
+            -- 'texlab' uses 'tectonic' by default, but 'lspconfig' replaces it with 'latexmk'
+            settings = {
+                texlab = {
+                    build = {
+                        args = { "-pdflua", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                        executable = "latexmk",
+                    },
+                },
             },
-        },
-    },
-}
-
--- LTeX language server (LanguageTool integration)
-servers.ltex = {
-    language = "de-DE",
-}
-
--- Python language server
-servers.pyright = {}
-
--- Java language server
-servers.jdtls = {}
-
--- starting LSP servers
-local lspconfig = require("lspconfig")
-for server, opts in pairs(servers) do
-
-    -- nvim-java needs to be started before lspconfig
-    -- if server == "jdtls" then
-    --     -- this always wants to update jdtls and fails to do so,
-    --     -- opening Mason in the process, really annoying...
-    --     require("java").setup()
-    --     -- goto continue
-    -- end
-
-    local defaults = {
-        capabilities = capabilities,
-    }
-    -- merge opts into defaults and start server
-    lspconfig[server].setup(vim.tbl_extend("force", defaults, opts))
-
-    -- additional LaTeX commands
-    if server == "texlab" then
+        }
+        -- additional LaTeX commands
         local buf = vim.api.nvim_get_current_buf()
         vim.api.nvim_buf_create_user_command(buf, "TexlabBuild", lspconfig.texlab.commands.TexlabBuild[1], {})
         vim.api.nvim_buf_create_user_command(buf, "TexlabForward", lspconfig.texlab.commands.TexlabForward[1], {})
-    end
+    end,
 
-    -- ::continue::
-end
+    -- LTeX language server (LanguageTool integration)
+    ["ltex"] = function()
+        local lspconfig = require("lspconfig")
+        lspconfig.ltex.setup {
+            language = "de-DE",
+        }
+    end,
+}
+
+-- Mason setup
+require("mason").setup()
+require("mason-lspconfig").setup {
+    handlers = handlers,
+    automatic_installation = true,
+    ensure_installed = {
+        "bashls",
+        "clangd",
+        "lua_ls",
+        "pyright",
+    },
+}
 
