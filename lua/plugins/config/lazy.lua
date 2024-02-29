@@ -19,8 +19,8 @@ local options = {
         "getscriptPlugin",
         "gzip",
         "logipat",
-        "netrw",
-        "netrwPlugin",
+        -- "netrw", -- netrw is required to download spellfiles
+        -- "netrwPlugin",
         "netrwSettings",
         "netrwFileHandlers",
         "matchit",

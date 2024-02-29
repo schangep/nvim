@@ -86,14 +86,6 @@ local handlers = {
         vim.api.nvim_buf_create_user_command(buf, "TexlabBuild", lspconfig.texlab.commands.TexlabBuild[1], {})
         vim.api.nvim_buf_create_user_command(buf, "TexlabForward", lspconfig.texlab.commands.TexlabForward[1], {})
     end,
-
-    -- LTeX language server (LanguageTool integration)
-    ["ltex"] = function()
-        local lspconfig = require("lspconfig")
-        lspconfig.ltex.setup {
-            language = "de-DE",
-        }
-    end,
 }
 
 -- Mason setup

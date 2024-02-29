@@ -8,7 +8,7 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
 -- Toggle Neotree side view
-vim.keymap.set('n', '<leader>n', "<cmd>Neotree toggle<CR>")
+vim.keymap.set('n', '<leader>n', "<cmd>Neotree toggle last<CR>")
 
 -- DAP mappings
 vim.keymap.set('n', '<leader>b', "<cmd>DapToggleBreakpoint<CR>") -- add breakpoint at line

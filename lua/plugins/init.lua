@@ -137,6 +137,20 @@ local plugins = {
         config = function() require("plugins.config.telescope") end,
     },
 
+    -- Telescope file browser
+    { "nvim-telescope/telescope-file-browser.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "nvim-telescope/telescope.nvim",
+            "nvim-lua/plenary.nvim",
+            "nvim-tree/nvim-web-devicons", -- optional
+        },
+        config = function()
+            require("telescope").load_extension("file_browser")
+            vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>", { noremap = true })
+        end,
+    },
+
     -- bridge Mason with Neovim bultin DAP (debug adapter protocol)
     { "jay-babu/mason-nvim-dap.nvim",
         event = "VeryLazy",
@@ -182,7 +196,6 @@ local plugins = {
             "williamboman/mason.nvim",
         },
     },
-
 }
 
 return plugins
