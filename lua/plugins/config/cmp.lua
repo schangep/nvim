@@ -22,6 +22,7 @@ local sources = {
     { name = "path" },
     { name = "buffer", keyword_length = 3 },
     -- { name = "spell", keyword_length = 3, option = {keep_all_entries = false} }, -- only if 'vim.opt.spell' is set to 'true'
+    { name = "copilot" },
 }
 
 local options = {

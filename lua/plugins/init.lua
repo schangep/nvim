@@ -69,10 +69,18 @@ local plugins = {
     },
 
     -- GitHub Copilot
-    { "github/copilot.vim",
+    { "zbirenbaum/copilot.lua",
         cmd = "Copilot",
         -- use ':Copilot setup' to configure GitHub Copilot
         -- use ':Copilot enable' to enable, see also ':help copilot'
+        event = "InsertEnter",
+        config = function() require("copilot").setup() end,
+        dependencies = {
+            -- Copilot as cmp source
+            { "zbirenbaum/copilot-cmp",
+                config = function()  require("copilot_cmp").setup() end,
+            },
+        },
     },
 
     -- Mason package manager for LSP servers
@@ -105,7 +113,7 @@ local plugins = {
                 dependencies = { "rafamadriz/friendly-snippets", },
             },
             -- symbols for completion items
-            { "onsails/lspkind.nvim", },
+            "onsails/lspkind.nvim",
             -- cmp sources plugins
             "saadparwaiz1/cmp_luasnip", -- snippet completions
             "hrsh7th/cmp-nvim-lua", -- enhanced Neovim config editing
