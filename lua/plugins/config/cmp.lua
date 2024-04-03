@@ -1,4 +1,5 @@
 local cmp = require("cmp")
+local lspkind = require("lspkind")
 
 if not cmp then
     print("nvim-cmp failed...")
@@ -36,6 +37,11 @@ local options = {
     mapping = cmp.mapping.preset.insert(mappings),
 
     sources = cmp.config.sources(sources, {{name = "buffer"}}),
+
+    formatting = {
+        format = lspkind.cmp_format()
+    },
+
 }
 
 -- Set nvim-cmp options

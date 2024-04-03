@@ -104,6 +104,8 @@ local plugins = {
                 -- useful snippets
                 dependencies = { "rafamadriz/friendly-snippets", },
             },
+            -- symbols for completion items
+            { "onsails/lspkind.nvim", },
             -- cmp sources plugins
             "saadparwaiz1/cmp_luasnip", -- snippet completions
             "hrsh7th/cmp-nvim-lua", -- enhanced Neovim config editing
