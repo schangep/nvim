@@ -54,6 +54,13 @@ local plugins = {
         config = function() require("Comment").setup() end,
     },
 
+    -- highlight, list and search todo comments
+    { "folke/todo-comments.nvim",
+        lazy = false;
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = { },
+    },
+
     -- TMUX navigation
     { "aserowy/tmux.nvim",
         event = "VeryLazy",
