@@ -63,6 +63,8 @@ local plugins = {
 
     -- TMUX navigation
     { "aserowy/tmux.nvim",
+        -- aserowy doesn't use tmux anymore,
+        -- possible alternative: numToStr/Navigator.nvim
         event = "VeryLazy",
         config = function() require("tmux").setup() end,
     },
@@ -80,7 +82,7 @@ local plugins = {
         cmd = "Copilot",
         -- use ':Copilot setup' to configure GitHub Copilot
         -- use ':Copilot enable' to enable, see also ':help copilot'
-        event = "InsertEnter",
+        -- event = "InsertEnter", -- I don't want Copilot to read every file I open
         config = function() require("copilot").setup() end,
         dependencies = {
             -- Copilot as cmp source
@@ -213,7 +215,16 @@ local plugins = {
             "williamboman/mason.nvim",
         },
     },
+
+    -- local plugins for testing
+    -- { dir = vim.fn.stdpath("config") .. "/plugin-name",
+    --     lazy = false,
+    -- },
+
+
 }
+
+
 
 return plugins
 
