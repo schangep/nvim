@@ -198,6 +198,7 @@ local plugins = {
             "mfussenegger/nvim-dap", -- builtin Neovim DAP
             "folke/neodev.nvim", -- recommended to enable type checking
             "ChristianChiarulli/neovim-codicons", -- default icons with alignment issues fixed
+            "nvim-neotest/nvim-nio",
         },
     },
 

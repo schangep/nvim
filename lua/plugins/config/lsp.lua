@@ -27,6 +27,10 @@ local handlers = {
         lspconfig[server].setup { capabilities = capabilities }
     end,
 
+    -- Bash language server
+    -- 'bashls' requires 'shellcheck' (https://github.com/koalaman/shellcheck)
+    -- :MasonInstall shellcheck
+
     -- Lua language server
     ["lua_ls"] = function()
         local lspconfig = require("lspconfig")
@@ -63,10 +67,6 @@ local handlers = {
         }
     end,
 
-    -- Bash language server
-    -- 'bashls' requires 'shellcheck' (https://github.com/koalaman/shellcheck)
-    -- :MasonInstall shellcheck
-
     -- LaTeX language server
     ["texlab"] = function()
         local lspconfig = require("lspconfig")
@@ -92,12 +92,15 @@ local handlers = {
 require("mason").setup()
 require("mason-lspconfig").setup {
     handlers = handlers,
-    automatic_installation = true,
+    automatic_installation = { -- true
+        exclude = { "ocamllsp" }
+    },
     ensure_installed = {
-        "bashls",
         "clangd",
         "lua_ls",
         "pyright",
+        -- "bashls",
+        -- "eslint",
     },
 }
 
