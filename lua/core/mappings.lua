@@ -19,3 +19,5 @@ vim.keymap.set('n', '<leader>h', "<cmd>DapStepOut<CR>")
 
 -- colortheme switcher
 vim.keymap.set('n', '<leader>cs', "<cmd>Telescope colorscheme<CR>")
+vim.keymap.set('n', '<leader>ts', "<cmd>TSBufToggle highlight<CR>")
+

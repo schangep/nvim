@@ -8,6 +8,18 @@ M.setup = function()
         end,
     })
 
+    -- set filetype to GNU Assembler for ETH courses
+    vim.api.nvim_create_autocmd({"BufRead", "BufNewFile" }, {
+        pattern = vim.tbl_map(
+            function(s)
+                return vim.env.HOME .. "/ETH/*" .. s
+            end,
+            { ".s", ".as", ".asm" }),
+        callback = function()
+            vim.bo.filetype = "gas"
+        end,
+    })
+
     -- not working with markdown LSP
     -- vim.cmd [[ " requires highlight groups hl-LspReferenceText, hl-LspReferenceRead, hl-LspReferenceWrite
     -- autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()
@@ -19,6 +31,9 @@ M.setup = function()
     vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
             local client = vim.lsp.get_client_by_id(args.data.client_id)
+            if not client then
+                return
+            end
             local capabilities = client.server_capabilities
             local opts = { buffer = args.buf, noremap = true, silent = true, }
 
@@ -26,7 +41,7 @@ M.setup = function()
                 return vim.tbl_deep_extend("error", opts, { desc = desc })
             end
 
-            if capabilities.hoverProvider then
+            if capabilities and capabilities.hoverProvider then
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, description("LSP hover"))
             end
 

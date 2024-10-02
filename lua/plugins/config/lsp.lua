@@ -50,7 +50,7 @@ local handlers = {
                     workspace = {
                         -- Make the server aware of Neovim runtime files
                         library = {
-                            vim.api.nvim_get_runtime_file("", true),
+                            -- vim.api.nvim_get_runtime_file("lua/*", true), -- causes errors on startup
                             [vim.fn.expand "$VIMRUNTIME/lua"] = true,
                             [vim.fn.expand "$VIMRUNTIME/lua/core"] = true,
                             [vim.fn.expand "$VIMRUNTIME/lua/plugins"] = true,
