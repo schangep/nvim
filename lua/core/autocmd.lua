@@ -17,6 +17,23 @@ M.setup = function()
             { ".s", ".as", ".asm" }),
         callback = function()
             vim.bo.filetype = "gas"
+            -- vim.bo.commentstring = "#%s"
+        end,
+    })
+
+    -- manual LSP setup for OCaml 4.13.1
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" },
+        callback = function(args)
+            vim.lsp.start({
+                name = "ocamllsp",
+                cmd = { "ocamllsp" },
+                -- Set the "root directory" to the parent directory of the file in the
+                -- current buffer (`args.buf`) that contains either a ".git" or a "dune-project" file.
+                -- Files that share a root directory will reuse the connection to the same LSP server.
+                root_dir = vim.fs.root(args.buf,
+                    { "*.opam", "esy.json", "package.json", ".git", "dune-project", "dune-workspace" }),
+            })
         end,
     })
 
