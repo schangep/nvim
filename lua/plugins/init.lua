@@ -253,6 +253,11 @@ local plugins = {
         end,
     },
 
+    -- syntax highlighting for LLVM intermediate representation
+    { "keith/llvm.vim",
+        ft = "llvm",
+    },
+
     -- local plugins for testing
     -- { dir = vim.fn.stdpath("config") .. "/plugin-name",
     --     lazy = false,
