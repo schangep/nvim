@@ -245,6 +245,14 @@ local plugins = {
         },
     },
 
+    { "lervag/vimtex",
+        ft = "tex", -- event = "FileType tex",
+        init = function()
+            vim.g.vimtex_view_method = "zathura"
+            vim.g.mapleader = " "
+        end,
+    },
+
     -- local plugins for testing
     -- { dir = vim.fn.stdpath("config") .. "/plugin-name",
     --     lazy = false,
