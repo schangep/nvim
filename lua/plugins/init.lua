@@ -61,6 +61,31 @@ local plugins = {
         opts = { },
     },
 
+    -- visualize and resolve merge conflicts
+    -- { "akinsho/git-conflict.nvim",
+    --     version = "*", -- only update if new tag is pushed (main might be unstable)
+    --     config = true,
+    -- },
+
+    { "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",         -- required
+            "sindrets/diffview.nvim",        -- optional - Diff integration
+            "nvim-telescope/telescope.nvim", -- optional
+        },
+        config = true,
+        cmd = { "Neogit" },
+    },
+
+    { "lewis6991/gitsigns.nvim",
+        event = "VeryLazy",
+        config = function()
+            require("gitsigns").setup()
+            vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", {})
+            vim.keymap.set("n", "<leader>gb", ":Gitsigns toggle_current_line_blame<CR>", {})
+        end,
+    },
+
     -- TMUX navigation
     { "aserowy/tmux.nvim",
         -- aserowy doesn't use tmux anymore,
@@ -74,7 +99,10 @@ local plugins = {
         event = "VeryLazy",
         build = ":TSUpdate",
         opts = require("plugins.config.treesitter"),
-        config = function(_, opts) require("nvim-treesitter.configs").setup(opts) end, -- NOT implied by 'opts'
+        config = function()
+            local opts = require("plugins.config.treesitter")
+            require("nvim-treesitter.configs").setup(opts)
+        end, -- NOT implied by 'opts'
     },
 
     -- GitHub Copilot
